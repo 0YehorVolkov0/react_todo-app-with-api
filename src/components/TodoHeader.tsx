@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Todo } from '../types/Todo';
+import { ErrorText } from '../utils/ErrorText';
 
 type Props = {
   isEveryActive: boolean;
@@ -27,7 +28,7 @@ export const TodoHeader: React.FC<Props> = ({
   const submitInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (submitInput.current && errorMessage !== 'Unable to update a todo') {
+    if (submitInput.current && errorMessage !== ErrorText.TodoUpdate) {
       submitInput.current.focus();
     }
   }, [todos, isLoading]);

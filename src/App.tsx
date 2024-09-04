@@ -13,6 +13,7 @@ import {
   USER_ID,
 } from './api/todos';
 import { Todo } from './types/Todo';
+import { ErrorText } from './utils/ErrorText';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -49,7 +50,7 @@ export const App: React.FC = () => {
 
     setIsLoading(true);
     if (!normalizeText) {
-      setErrorMessage('Title should not be empty');
+      setErrorMessage(ErrorText.TitleEmpty);
       setIsLoading(false);
 
       return;
@@ -66,7 +67,7 @@ export const App: React.FC = () => {
         setTodos(prevTodos => [...prevTodos, currentTodo]);
         setTodoText('');
       })
-      .catch(() => setErrorMessage('Unable to add a todo'))
+      .catch(() => setErrorMessage(ErrorText.TodoAdd))
       .finally(() => {
         setIsLoading(false);
         setTempTodo(null);
@@ -78,7 +79,7 @@ export const App: React.FC = () => {
     setIsCopletedTodo(prevTodos => [...prevTodos, id]);
     deleteTodo(id)
       .then(() => setTodos(prevTodo => prevTodo.filter(elem => elem.id !== id)))
-      .catch(() => setErrorMessage('Unable to delete a todo'))
+      .catch(() => setErrorMessage(ErrorText.TodoDelete))
       .finally(() => {
         setIsLoading(false);
         setIsCopletedTodo(prevTodos =>
@@ -103,7 +104,7 @@ export const App: React.FC = () => {
               prevTodos.filter(prevTodo => prevTodo.id !== completedTodo.id),
             ),
           )
-          .catch(() => setErrorMessage('Unable to delete a todo'))
+          .catch(() => setErrorMessage(ErrorText.TodoDelete))
           .finally(() => {
             setIsLoading(false);
             setIsCopletedTodo([]);
@@ -123,7 +124,7 @@ export const App: React.FC = () => {
     setIsCopletedTodo(prevTodo => [...prevTodo, todoToUpdate.id]);
 
     if (!todoToUpdate) {
-      setErrorMessage('Todo not found');
+      setErrorMessage(ErrorText.NotFound);
       setIsLoading(false);
 
       return;
@@ -142,7 +143,7 @@ export const App: React.FC = () => {
           ),
         );
       })
-      .catch(() => setErrorMessage('Unable to update a todo'))
+      .catch(() => setErrorMessage(ErrorText.TodoUpdate))
       .finally(() => {
         setIsLoading(false);
         setIsCopletedTodo([]);
@@ -177,7 +178,7 @@ export const App: React.FC = () => {
               })),
             );
           })
-          .catch(() => setErrorMessage('Unable to update a todo'))
+          .catch(() => setErrorMessage(ErrorText.TodoUpdate))
           .finally(() => {
             setIsLoading(false);
             setIsCopletedTodo([]);
@@ -190,7 +191,7 @@ export const App: React.FC = () => {
     setIsLoading(true);
     getTodos()
       .then(setTodos)
-      .catch(() => setErrorMessage('Unable to load todos'))
+      .catch(() => setErrorMessage(ErrorText.TodoLoad))
       .finally(() => setIsLoading(false));
   }, []);
 

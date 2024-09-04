@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Todo } from '../types/Todo';
 import { useEffect, useRef, useState } from 'react';
 import { updateCompletedTodo } from '../api/todos';
+import { ErrorText } from '../utils/ErrorText';
 
 type Props = {
   todo: Todo;
@@ -61,7 +62,7 @@ export const TodoItem: React.FC<Props> = ({
         setIsEditing(false);
       })
       .catch(() => {
-        setErrorMessage('Unable to update a todo');
+        setErrorMessage(ErrorText.TodoUpdate);
       })
       .finally(() => setIsEditLoading(false));
   };
@@ -101,11 +102,11 @@ export const TodoItem: React.FC<Props> = ({
           onChange={e => setEditTitle(e.target.value)}
           onBlur={() => updateText(todo.id, editTitle)}
           data-cy="TodoTitleField"
-          onKeyUp={e => {
-            e.preventDefault();
-            if (e.key === 'Enter') {
+          onKeyUp={event => {
+            event.preventDefault();
+            if (event.key === 'Enter') {
               updateText(todo.id, editTitle);
-            } else if (e.key === 'Escape') {
+            } else if (event.key === 'Escape') {
               setIsEditing(false);
             }
           }}
